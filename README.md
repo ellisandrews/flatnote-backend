@@ -1,2 +1,2 @@
 # flatnote-backend
-Rails JSON API for FlatNote
+Restful Rails JSON API for FlatNote
