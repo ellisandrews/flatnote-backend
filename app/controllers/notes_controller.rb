@@ -15,7 +15,17 @@ class NotesController < ApplicationController
         if note.save
             render json: note, status: :created
         else
-            render json: { error: 'Failed to create note' }, status: :not_acceptable
+            render json: { error: 'Failed to create note' }, status: 400
+        end
+    end
+
+    def update
+        note = Note.find(params[:id])
+        note.assign_attributes(note_params)
+        if note.save
+            render json: note
+        else
+            render json: { error: 'Failed to update note' }, status: 400
         end
     end
 
