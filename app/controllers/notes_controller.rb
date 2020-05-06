@@ -1,13 +1,14 @@
 class NotesController < ApplicationController
 
     def index
+        # Allow optional filtering on user_id, otherwise return all
         user_id = params[:user_id]
         if user_id
-            notes = Note.where(user_id: user_id).order(:user_id)
+            notes = Note.where(user_id: user_id)
         else
             notes = Note.all
         end
-        render json: notes
+        render json: notes.order(:id)
     end
 
     def create
@@ -15,7 +16,7 @@ class NotesController < ApplicationController
         if note.save
             render json: note, status: :created
         else
-            render json: { error: 'Failed to create note' }, status: 400
+            render json: { error: 'Failed to create note' }, status: :bad_request
         end
     end
 
@@ -25,7 +26,17 @@ class NotesController < ApplicationController
         if note.save
             render json: note
         else
-            render json: { error: 'Failed to update note' }, status: 400
+            render json: { error: 'Failed to update note' }, status: :bad_request
+        end
+    end
+
+    def destroy
+        note = Note.find(params[:id])
+        begin
+            note.destroy!
+            render json: { message: 'Note successfully deleted' }
+        rescue ActiveRecord::RecordNotDestroyed => invalid
+            render json: { error: 'Failed to delete note', message: invalid.record.errors }, status: :internal_server_error
         end
     end
 
