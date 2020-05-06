@@ -11,4 +11,10 @@ class Note < ApplicationRecord
     end
   end
 
+  def tag_names
+    # Read tag names as a comma-separated string of title-cased names
+    titleized_names = self.tags.map { |tag| tag.name.titleize }
+    titleized_names.join(', ')
+  end
+
 end
