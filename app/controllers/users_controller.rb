@@ -17,14 +17,18 @@ class UsersController < ApplicationController
     # end
 
     def create
-        user = User.find_or_create_by(user_params)
-        render json: user
+        user = User.new(user_params)
+        if user.save
+            render json: user
+        else
+            render json: { error: 'User creation failed' }, status: :bad_request
+        end
     end
 
     private
 
     def user_params
-        params.require(:user).permit(:username)
+        params.permit(:username, :password)
     end
 
 end
