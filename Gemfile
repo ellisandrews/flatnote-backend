@@ -46,3 +46,6 @@ gem 'active_model_serializers'
 
 # Title casing
 gem 'titleize'
+
+# JSON Web Tokens for auth
+gem 'jwt'
