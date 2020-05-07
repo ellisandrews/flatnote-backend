@@ -12,6 +12,14 @@ class SessionsController < ApplicationController
     end
   end
 
+  def show
+    if @user
+      render json: @user
+    else
+      render json: { error: 'Invalid token' }, status: :forbidden
+    end
+  end
+
   private
 
   def session_params
