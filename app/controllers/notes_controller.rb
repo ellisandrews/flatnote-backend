@@ -16,7 +16,7 @@ class NotesController < ApplicationController
         if note.save
             render json: note, status: :created
         else
-            render json: { error: 'Failed to create note' }, status: :bad_request
+            render json: { error: 'Failed to create note', messages: note.errors.full_messages }, status: :bad_request
         end
     end
 
@@ -26,7 +26,7 @@ class NotesController < ApplicationController
         if note.save
             render json: note
         else
-            render json: { error: 'Failed to update note' }, status: :bad_request
+            render json: { error: 'Failed to update note', messages: note.errors.full_messages }, status: :bad_request
         end
     end
 
@@ -36,14 +36,14 @@ class NotesController < ApplicationController
             note.destroy!
             render json: { message: 'Note successfully deleted' }
         rescue ActiveRecord::RecordNotDestroyed => invalid
-            render json: { error: 'Failed to delete note', message: invalid.record.errors }, status: :internal_server_error
+            render json: { error: 'Failed to delete note', message: invalid.record.errors.full_messages }, status: :internal_server_error
         end
     end
 
     private
 
     def note_params
-        params.permit(:title, :content, :user_id, tag_names: [])
+        params.require(:note).permit(:title, :content, :user_id, tag_names: [])
     end
 
 end
