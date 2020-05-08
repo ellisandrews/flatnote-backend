@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       token = encode_token(user_id: user.id)
       render json: { user: UserSerializer.new(user), token: token }, status: :created
     else
-      render json: { error: 'Failed to authenticate' }, status: :forbidden
+      render json: { error: 'Failed to log in', messages: ['Invalid username or password'] }, status: :forbidden
     end
   end
 
