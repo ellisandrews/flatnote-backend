@@ -1,9 +1,8 @@
 class User < ApplicationRecord
     has_many :notes
-    validates :username, { presence: true, uniqueness: { case_sensitive: false } }
     has_secure_password
-
-    validates :username, length: { minimum: 1 }
+    
+    validates :username, { presence: true, uniqueness: { case_sensitive: false }, length: { minimum: 1 } }
     validates :password, length: { minimum: 8 }
 
     before_save :downcase_username

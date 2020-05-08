@@ -3,6 +3,8 @@ class Note < ApplicationRecord
   has_many :note_tags, dependent: :destroy 
   has_many :tags, through: :note_tags
 
+  validates_presence_of :title, :content
+
   def tag_names=(names)
     # Takes an array of names of tags (existing or otherwise) and associates them with the Note
     self.tags = names.map do |name|
